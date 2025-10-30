@@ -18,6 +18,7 @@
       --text:#e9e9ea;
       --muted:#a9abb3;
       --gold:#D4AF37;
+      --danger:#ff6b6b;
       --radius:18px;
       --shadow:0 10px 30px rgba(0,0,0,.35);
       --ring:0 0 0 2px rgba(212,175,55,.3), 0 0 24px rgba(212,175,55,.18);
@@ -33,19 +34,11 @@
       background:radial-gradient(1200px 600px at 85% -10%, rgba(212,175,55,.06), transparent 60%), var(--bg);
     }
 
-    .logo{
-      width:100px;height:100px;margin-bottom:20px;
-    }
-    .logo img{
-      width:100%;height:auto;border-radius:16px;box-shadow:var(--shadow);
-    }
+    .logo{width:100px;height:100px;margin-bottom:20px;}
+    .logo img{width:100%;height:auto;border-radius:16px;box-shadow:var(--shadow);}
 
-    h1{
-      font-size:32px;font-weight:800;color:var(--gold);margin:10px 0 5px 0;letter-spacing:.5px;
-    }
-    h2{
-      font-size:20px;font-weight:600;margin:0 0 30px 0;color:var(--text);
-    }
+    h1{font-size:32px;font-weight:800;color:var(--gold);margin:10px 0 5px 0;letter-spacing:.5px;}
+    h2{font-size:20px;font-weight:600;margin:0 0 30px 0;color:var(--text);}
 
     .search-box{
       display:flex;flex-direction:column;gap:16px;align-items:center;justify-content:center;
@@ -58,26 +51,25 @@
       border-radius:14px;padding:14px 16px;color:var(--text);font-size:16px;text-align:center;
       outline:none;transition:box-shadow .2s,border-color .2s;
     }
-    .input:focus{
-      border-color:var(--gold);box-shadow:var(--ring);
-    }
-    .input::-webkit-outer-spin-button,
-    .input::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-    .input[type=number] {
-      -moz-appearance: textfield;
-    }
+    .input:focus{border-color:var(--gold);box-shadow:var(--ring);}
+    .input::-webkit-outer-spin-button,.input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+    .input[type=number]{-moz-appearance:textfield;}
 
     .btn{
-      background:linear-gradient(180deg,#d9bf68,#D4AF37 60%,#bb9831);
-      color:#1a1a1a;border:0;border-radius:14px;padding:14px 18px;font-weight:800;
+      background:linear-gradient(90deg, #d4af37, #c6a033);
+      color:#1a1a1a;border:0;border-radius:50px;padding:14px 24px;font-weight:800;
       cursor:pointer;box-shadow:0 8px 22px rgba(212,175,55,.25);
-      transition:transform .08s ease, filter .2s ease;width:100%;font-size:16px;
+      transition:transform .1s ease, filter .2s ease, background .2s ease;
+      width:60%;font-size:16px;text-transform:uppercase;letter-spacing:1px;
     }
-    .btn:hover{filter:brightness(1.05)}
-    .btn:active{transform:translateY(1px)}
+    .btn:hover{filter:brightness(1.05);background:linear-gradient(90deg,#e1be46,#d4af37);}
+    .btn:active{transform:translateY(1px);}
+
+    .message{
+      margin-top:16px;padding:10px 16px;border-radius:10px;font-weight:600;
+      display:none;
+    }
+    .error{background:rgba(255,107,107,0.15);border:1px solid var(--danger);color:var(--danger);}
 
     .result{
       margin-top:25px;background:var(--panel);padding:22px;border-radius:var(--radius);
@@ -85,10 +77,7 @@
       animation:fadeIn .6s ease forwards;
     }
 
-    @keyframes fadeIn{
-      from{opacity:0;transform:translateY(15px)}
-      to{opacity:1;transform:translateY(0)}
-    }
+    @keyframes fadeIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
 
     .row{margin:10px 0;text-align:left;}
     .label{font-size:14px;color:var(--muted);}
@@ -111,6 +100,7 @@
   <div class="search-box">
     <input id="seat" class="input" type="number" inputmode="numeric" placeholder="Enter your seat number" />
     <button id="go" class="btn">Check Order</button>
+    <div id="message" class="message error"></div>
   </div>
 
   <div id="result" class="result" style="display:none">
@@ -153,6 +143,16 @@
       return data.find(r=>(r.seat_number||'').trim()===s);
     }
 
+    function showMessage(text){
+      const msg=document.getElementById('message');
+      msg.textContent=text;
+      msg.style.display='block';
+    }
+    function hideMessage(){
+      const msg=document.getElementById('message');
+      msg.style.display='none';
+    }
+
     function render(record){
       document.getElementById('orderType').textContent=record.order_type||'—';
       document.getElementById('robeSize').textContent=record.size||'—';
@@ -176,17 +176,18 @@
     }
 
     async function onSearch(){
+      hideMessage();
       document.getElementById('result').style.display='none';
       const seat=document.getElementById('seat').value;
-      if(!seat){alert('Please enter your seat number.');return;}
+      if(!seat){showMessage('Please enter your seat number.');return;}
       try{
         const data=await loadData();
         const rec=findBySeat(data,seat);
-        if(!rec){alert('No record found for this seat number.');return;}
+        if(!rec){showMessage('No record found for this seat number.');return;}
         render(rec);
       }catch(err){
         console.error(err);
-        alert('An error occurred while loading data.');
+        showMessage('An error occurred while loading data.');
       }
     }
 
