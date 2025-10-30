@@ -48,24 +48,23 @@
       }
     }
 
-    .logo-circle {
+    /* شعار بإطار مربع أنيق */
+    .logo-box {
       width: 110px;
       height: 110px;
-      margin: 0 auto 20px;
-      border-radius: 50%;
-      background: radial-gradient(circle at center, rgba(191,161,69,0.25), rgba(191,161,69,0.05));
+      margin: 0 auto 25px;
+      border-radius: 15px;
       border: 2px solid rgba(191,161,69,0.4);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      box-shadow: 0 0 20px rgba(191,161,69,0.1);
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(191,161,69,0.15);
     }
 
-    .logo-circle img {
-      width: 80%;
-      height: 80%;
-      object-fit: contain;
-      border-radius: 50%;
+    .logo-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 15px;
+      display: block;
     }
 
     h1 {
@@ -187,34 +186,21 @@
     }
 
     @keyframes glow {
-      from {
-        filter: brightness(1);
-      }
-      to {
-        filter: brightness(1.4);
-      }
+      from { filter: brightness(1); }
+      to { filter: brightness(1.4); }
     }
 
     @media (max-width: 480px) {
-      .card {
-        padding: 35px 20px;
-      }
-
-      .logo-circle {
-        width: 90px;
-        height: 90px;
-      }
-
-      .name {
-        font-size: 1.4rem;
-      }
+      .card { padding: 35px 20px; }
+      .logo-box { width: 90px; height: 90px; border-radius: 12px; }
+      .name { font-size: 1.4rem; }
     }
   </style>
 </head>
 
 <body>
   <div class="card">
-    <div class="logo-circle">
+    <div class="logo-box">
       <img src="./logo.png" alt="Logo">
     </div>
     <h1>Graduation Team</h1>
