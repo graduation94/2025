@@ -5,212 +5,274 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Graduation Order Checker</title>
 
-    <!-- MUI & Fonts -->
+    <!-- MUI CDN -->
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@mui/material@5.15.14/dist/material.min.css"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
     />
-    <script src="https://cdn.jsdelivr.net/npm/@mui/material@5.15.14/dist/material.min.js"></script>
+    <script
+      src="https://unpkg.com/@mui/material@5.15.14/umd/material-ui.development.js"
+      crossorigin
+    ></script>
 
     <style>
       @font-face {
-        font-family: 'GEThuluth';
-        src: url('./GE-Thuluth-Light.otf') format('opentype');
+        font-family: "GEThuluth";
+        src: url("./GE-Thuluth-Light.otf") format("opentype");
       }
 
       body {
         margin: 0;
-        font-family: 'Poppins', sans-serif;
-        background: radial-gradient(circle at top, #111 0%, #000 100%);
+        background-color: #0d0d0d;
         color: #fff;
+        font-family: "Roboto", sans-serif;
         display: flex;
-        flex-direction: column;
-        align-items: center;
         justify-content: center;
+        align-items: center;
         min-height: 100vh;
       }
 
-      .container {
-        width: 95%;
-        max-width: 450px;
-        background: rgba(20, 20, 20, 0.95);
-        border-radius: 20px;
-        padding: 40px 30px;
-        text-align: center;
-        box-shadow: 0 0 30px rgba(255, 215, 0, 0.15);
-        border: 1px solid rgba(255, 215, 0, 0.15);
-      }
-
-      img.logo {
-        width: 80px;
-        margin-bottom: 15px;
-        filter: drop-shadow(0 0 6px gold);
-      }
-
-      h1 {
-        font-size: 1.8rem;
-        background: linear-gradient(to right, #c8aa60, #fff3b0);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin-bottom: 5px;
-        font-weight: 600;
-      }
-
-      p.subtitle {
-        color: #aaa;
-        margin-bottom: 25px;
-      }
-
-      input {
+      #root {
         width: 100%;
-        padding: 12px;
-        border-radius: 8px;
-        border: none;
-        outline: none;
-        background: #111;
-        color: #fff;
-        font-size: 1rem;
-        text-align: center;
-        letter-spacing: 1px;
-        box-shadow: inset 0 0 5px rgba(255, 215, 0, 0.1);
-      }
-
-      button {
-        width: 100%;
-        margin-top: 15px;
-        padding: 12px;
-        font-size: 1rem;
-        border: none;
-        border-radius: 8px;
-        background: linear-gradient(to right, #b28d28, #e6c266);
-        color: #000;
-        font-weight: bold;
-        cursor: pointer;
-        transition: all 0.3s ease;
-      }
-
-      button:hover {
-        background: linear-gradient(to right, #e6c266, #b28d28);
-        transform: translateY(-1px);
-      }
-
-      .result-card {
-        margin-top: 25px;
-        padding: 25px;
-        border-radius: 15px;
-        border: 1px solid rgba(255, 215, 0, 0.3);
-        background: rgba(255, 255, 255, 0.05);
-        box-shadow: 0 0 10px rgba(255, 215, 0, 0.1);
-        animation: fadeSlide 0.6s ease forwards;
-        opacity: 0;
-        transform: translateY(15px);
-      }
-
-      @keyframes fadeSlide {
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .order-type {
-        color: #d4af37;
-        font-weight: 600;
-        margin-bottom: 10px;
-      }
-
-      .name-line {
-        font-family: 'GEThuluth', serif;
-        font-size: 1.6rem;
-        background: linear-gradient(to right, #f5e6b3, #e0c47a);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin: 10px 0;
-      }
-
-      .size {
-        margin-top: 12px;
-        font-size: 1rem;
-        color: #fff;
-        display: inline-block;
-        padding: 6px 15px;
-        border-radius: 8px;
-        border: 1px solid rgba(255, 215, 0, 0.3);
-        background: rgba(255, 215, 0, 0.05);
-      }
-
-      .message {
-        margin-top: 25px;
-        padding: 15px;
-        border-radius: 10px;
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 215, 0, 0.3);
-        color: #c8aa60;
-        font-size: 0.95rem;
-        animation: fadeSlide 0.6s ease forwards;
-        opacity: 0;
-        transform: translateY(15px);
-      }
-
-      .footer {
-        margin-top: 25px;
-        font-size: 0.85rem;
-        color: #777;
+        display: flex;
+        justify-content: center;
       }
     </style>
   </head>
   <body>
-    <div class="container">
-      <img src="./logo.png" alt="Logo" class="logo" />
-      <h1>Graduation Team</h1>
-      <p class="subtitle">Check your graduation order</p>
+    <div id="root"></div>
 
-      <input type="number" id="seatNumber" placeholder="Enter your Seat Number" />
-      <button id="checkBtn">Check Order</button>
+    <script type="text/javascript">
+      const {
+        Container,
+        Card,
+        CardContent,
+        Typography,
+        TextField,
+        Button,
+        createTheme,
+        ThemeProvider,
+        CssBaseline,
+        Box,
+      } = MaterialUI;
 
-      <div id="result"></div>
+      const theme = createTheme({
+        palette: {
+          mode: "dark",
+          background: { default: "#0d0d0d", paper: "#1a1a1a" },
+          primary: { main: "#c5a24a" },
+          text: { primary: "#ffffff" },
+        },
+        shape: { borderRadius: 14 },
+      });
 
-      <div class="footer">Programmed by Albara</div>
-    </div>
+      function App() {
+        const [seat, setSeat] = React.useState("");
+        const [student, setStudent] = React.useState(null);
+        const [message, setMessage] = React.useState("");
 
-    <script>
-      const resultDiv = document.getElementById('result');
-      const btn = document.getElementById('checkBtn');
+        const handleCheck = async () => {
+          setStudent(null);
+          setMessage("");
 
-      btn.addEventListener('click', async () => {
-        const seat = document.getElementById('seatNumber').value.trim();
-        resultDiv.innerHTML = '';
-
-        if (!seat) {
-          resultDiv.innerHTML = '<div class="message">Please enter your seat number.</div>';
-          return;
-        }
-
-        try {
-          const res = await fetch('./orders.json?nocache=' + Date.now());
-          const data = await res.json();
-          const student = data.find((x) => x.seat_number == seat);
-
-          if (!student) {
-            resultDiv.innerHTML = `
-              <div class="message">
-                This website’s data was last updated on <b>Thursday at 11:00 PM</b>.<br>
-                If your record doesn’t appear yet, please check back later.
-              </div>`;
+          if (!seat.trim()) {
+            setMessage("Please enter your seat number.");
             return;
           }
 
-          resultDiv.innerHTML = `
-            <div class="result-card">
-              <div class="order-type">Order Type: ${student.order_type || '-'}</div>
-              <div class="name-line">${student.title || ''} ${student.name_on_robe || ''}</div>
-              <div class="size">Size: ${student.size || '-'}</div>
-            </div>
-          `;
-        } catch (err) {
-          resultDiv.innerHTML = `<div class="message">Error loading data. Please try again.</div>`;
+          try {
+            const res = await fetch("./orders.json?nocache=" + Date.now());
+            const data = await res.json();
+            const record = data.find((x) => x.seat_number == seat);
+
+            if (!record) {
+              setMessage(
+                "This website’s data was last updated on Thursday at 11:00 PM.\nIf your record doesn’t appear yet, please check back later."
+              );
+              return;
+            }
+            setStudent(record);
+          } catch {
+            setMessage("Error loading data. Please try again.");
+          }
+        };
+
+        return (
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Container
+              maxWidth="xs"
+              sx={{
+                py: 4,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <img
+                src="./logo.png"
+                alt="Logo"
+                style={{
+                  width: 80,
+                  marginBottom: 16,
+                  filter: "drop-shadow(0 0 5px #c5a24a)",
+                }}
+              />
+              <Typography
+                variant="h5"
+                sx={{
+                  background:
+                    "linear-gradient(to right, #c5a24a, #f2e5b1)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  fontWeight: 600,
+                }}
+              >
+                Graduation Team
+              </Typography>
+              <Typography variant="body2" sx={{ color: "#aaa", mb: 3 }}>
+                Check your graduation order
+              </Typography>
+
+              <TextField
+                fullWidth
+                type="number"
+                variant="outlined"
+                label="Seat Number"
+                value={seat}
+                onChange={(e) => setSeat(e.target.value)}
+                InputLabelProps={{ style: { color: "#aaa" } }}
+                sx={{
+                  input: { textAlign: "center", color: "#fff" },
+                  mb: 2,
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": { borderColor: "#333" },
+                    "&:hover fieldset": { borderColor: "#c5a24a" },
+                    "&.Mui-focused fieldset": { borderColor: "#c5a24a" },
+                  },
+                }}
+              />
+
+              <Button
+                fullWidth
+                variant="contained"
+                onClick={handleCheck}
+                sx={{
+                  background:
+                    "linear-gradient(90deg, #b7933a 0%, #e3c66c 100%)",
+                  color: "#000",
+                  fontWeight: 600,
+                  textTransform: "none",
+                  py: 1.2,
+                  "&:hover": {
+                    background:
+                      "linear-gradient(90deg, #e3c66c 0%, #b7933a 100%)",
+                  },
+                }}
+              >
+                Check Order
+              </Button>
+
+              {student && (
+                <Card
+                  elevation={3}
+                  sx={{
+                    mt: 3,
+                    border: "1px solid rgba(197,162,74,0.3)",
+                    backgroundColor: "#151515",
+                    animation: "fadeScale 0.5s ease forwards",
+                  }}
+                >
+                  <CardContent>
+                    <Typography
+                      variant="subtitle1"
+                      sx={{
+                        color: "#c5a24a",
+                        fontWeight: 600,
+                        mb: 1,
+                        textAlign: "center",
+                      }}
+                    >
+                      Order Type: {student.order_type}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        fontFamily: "GEThuluth",
+                        fontSize: "1.5rem",
+                        background:
+                          "linear-gradient(to right, #f5e6b3, #e0c47a)",
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                        textAlign: "center",
+                        mb: 1,
+                      }}
+                    >
+                      {student.title} {student.name_on_robe}
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        color: "#fff",
+                        textAlign: "center",
+                        background:
+                          "rgba(255, 215, 0, 0.05)",
+                        border: "1px solid rgba(255, 215, 0, 0.2)",
+                        display: "inline-block",
+                        px: 2,
+                        py: 0.5,
+                        borderRadius: "8px",
+                      }}
+                    >
+                      Size: {student.size}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              )}
+
+              {message && (
+                <Box
+                  sx={{
+                    mt: 3,
+                    p: 2,
+                    borderRadius: "12px",
+                    border: "1px solid rgba(255,215,0,0.3)",
+                    backgroundColor: "rgba(255,255,255,0.05)",
+                    color: "#c5a24a",
+                    whiteSpace: "pre-line",
+                    textAlign: "center",
+                    animation: "fadeScale 0.5s ease forwards",
+                  }}
+                >
+                  {message}
+                </Box>
+              )}
+
+              <Typography
+                variant="body2"
+                sx={{ color: "#666", mt: 4, fontSize: "0.8rem" }}
+              >
+                Programmed by Albara
+              </Typography>
+            </Container>
+          </ThemeProvider>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<App />);
+
+      const style = document.createElement("style");
+      style.innerHTML = `
+        @keyframes fadeScale {
+          from { opacity: 0; transform: scale(0.97); }
+          to { opacity: 1; transform: scale(1); }
         }
-      });
+      `;
+      document.head.appendChild(style);
     </script>
+
+    <!-- React & ReactDOM -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
   </body>
 </html>
