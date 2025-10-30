@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Graduation Order Checker</title>
 
-  <!-- Font -->
   <style>
     @font-face {
       font-family: 'GEThuluth';
@@ -26,19 +25,19 @@
     }
 
     .container {
-      background: rgba(15, 15, 15, 0.9);
+      background: rgba(15, 15, 15, 0.95);
       border: 1px solid #3b3b3b;
       border-radius: 20px;
       padding: 40px;
       max-width: 420px;
       width: 90%;
-      box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+      box-shadow: 0 0 25px rgba(255, 215, 0, 0.1);
     }
 
     img.logo {
       width: 80px;
       margin-bottom: 20px;
-      filter: drop-shadow(0 0 6px gold);
+      filter: drop-shadow(0 0 8px gold);
     }
 
     h1 {
@@ -89,30 +88,53 @@
 
     .result-card {
       margin-top: 25px;
-      padding: 20px;
+      padding: 25px;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 215, 0, 0.3);
       border-radius: 15px;
       box-shadow: 0 0 10px rgba(255, 215, 0, 0.08);
-      animation: fadeIn 0.5s ease;
+      animation: fadeSlide 0.6s ease forwards;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    @keyframes fadeSlide {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .label {
       color: #d4af37;
       font-weight: 600;
-    }
-
-    .value {
-      color: #fff;
       margin-bottom: 8px;
     }
 
-    .thuluth {
+    .type {
+      font-size: 1rem;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .name-title {
       font-family: 'GEThuluth', serif;
-      font-size: 1.3rem;
+      font-size: 1.5rem;
       background: linear-gradient(to right, #f5e6b3, #e0c47a);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      margin: 15px 0;
+    }
+
+    .size {
+      color: #fff;
+      font-size: 1rem;
+      background: rgba(255, 215, 0, 0.08);
+      padding: 6px 15px;
+      border-radius: 8px;
+      display: inline-block;
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      margin-top: 10px;
     }
 
     .footer {
@@ -121,9 +143,17 @@
       color: #777;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+    .message {
+      margin-top: 25px;
+      padding: 15px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      color: #c8aa60;
+      font-size: 0.95rem;
+      animation: fadeSlide 0.6s ease forwards;
+      opacity: 0;
+      transform: translateY(20px);
     }
   </style>
 </head>
@@ -150,7 +180,7 @@
       resultDiv.innerHTML = '';
 
       if (!seat) {
-        resultDiv.innerHTML = '<p style="color:#e6c266;">Please enter your seat number.</p>';
+        resultDiv.innerHTML = '<div class="message">Please enter your seat number.</div>';
         return;
       }
 
@@ -161,25 +191,23 @@
 
         if (!student) {
           resultDiv.innerHTML = `
-            <div class="result-card">
-              <p style="color:#c8aa60;font-size:0.95rem;">
-                This website’s data was last updated on <b>Thursday at 12:00 PM</b>.<br>
-                If your record doesn’t appear yet, please check back later.
-              </p>
+            <div class="message">
+              This website’s data was last updated on <b>Thursday at 12:00 PM</b>.<br>
+              If your record doesn’t appear yet, please check back later.
             </div>`;
           return;
         }
 
         resultDiv.innerHTML = `
           <div class="result-card">
-            <div><span class="label">Order Type:</span> <span class="value">${student.order_type || '-'}</span></div>
-            <div><span class="label">Name on Robe:</span> <div class="thuluth">${student.name_on_robe || '-'}</div></div>
-            <div><span class="label">Size:</span> <span class="value">${student.size || '-'}</span></div>
-            <div><span class="label">Title:</span> <div class="thuluth">${student.title || '-'}</div></div>
+            <div class="label">Order Type:</div>
+            <div class="type">${student.order_type || '-'}</div>
+            <div class="name-title">${student.title || ''} ${student.name_on_robe || ''}</div>
+            <div class="size">Size: ${student.size || '-'}</div>
           </div>
         `;
       } catch (err) {
-        resultDiv.innerHTML = `<p style="color:#f77;">Error loading data.</p>`;
+        resultDiv.innerHTML = `<div class="message">Error loading data. Please try again.</div>`;
       }
     });
   </script>
