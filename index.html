@@ -1,197 +1,187 @@
-<!doctype html>
-<html lang="en" dir="ltr">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Graduation Team – Check Your Order</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Graduation Order Checker</title>
+
+  <!-- Font -->
   <style>
     @font-face {
       font-family: 'GEThuluth';
       src: url('./GE-Thuluth-Light.otf') format('opentype');
-      font-weight: 300;
-      font-style: normal;
-      font-display: swap;
-    }
-    :root {
-      --bg:#0f0f10;
-      --panel:#141416;
-      --text:#e9e9ea;
-      --muted:#a9abb3;
-      --gold:#D4AF37;
-      --radius:18px;
-      --shadow:0 10px 30px rgba(0,0,0,.35);
-      --ring:0 0 0 2px rgba(212,175,55,.3), 0 0 24px rgba(212,175,55,.18);
-    }
-    *{box-sizing:border-box;}
-    html,body{height:100%;margin:0;padding:0;}
-    body{
-      background:var(--bg);
-      color:var(--text);
-      font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
-      display:flex;flex-direction:column;align-items:center;justify-content:center;
-      text-align:center;
-      background:radial-gradient(1200px 600px at 85% -10%, rgba(212,175,55,.06), transparent 60%), var(--bg);
     }
 
-    .logo{
-      width:100px;height:100px;margin-bottom:20px;
-    }
-    .logo img{
-      width:100%;height:auto;border-radius:16px;box-shadow:var(--shadow);
-    }
-
-    h1{
-      font-size:32px;font-weight:800;color:var(--gold);margin:10px 0 5px 0;letter-spacing:.5px;
-    }
-    h2{
-      font-size:20px;font-weight:600;margin:0 0 30px 0;color:var(--text);
-    }
-
-    .search-box{
-      display:flex;flex-direction:column;gap:16px;align-items:center;justify-content:center;
-      background:var(--panel);padding:30px 24px;border-radius:var(--radius);box-shadow:var(--shadow);
-      width:min(400px,90%);
-    }
-
-    .input{
-      width:100%;background:#0c0c0e;border:1px solid rgba(255,255,255,.08);
-      border-radius:14px;padding:14px 16px;color:var(--text);font-size:16px;text-align:center;
-      outline:none;transition:box-shadow .2s,border-color .2s;
-    }
-    .input:focus{
-      border-color:var(--gold);box-shadow:var(--ring);
-    }
-    .input::-webkit-outer-spin-button,
-    .input::-webkit-inner-spin-button {
-      -webkit-appearance: none;
+    body {
       margin: 0;
-    }
-    .input[type=number] {
-      -moz-appearance: textfield;
-    }
-
-    .btn{
-      background:linear-gradient(180deg,#d9bf68,#D4AF37 60%,#bb9831);
-      color:#1a1a1a;border:0;border-radius:14px;padding:14px 18px;font-weight:800;
-      cursor:pointer;box-shadow:0 8px 22px rgba(212,175,55,.25);
-      transition:transform .08s ease, filter .2s ease;width:100%;font-size:16px;
-    }
-    .btn:hover{filter:brightness(1.05)}
-    .btn:active{transform:translateY(1px)}
-
-    .result{
-      margin-top:25px;background:var(--panel);padding:22px;border-radius:var(--radius);
-      box-shadow:var(--shadow);width:min(400px,90%);
-      animation:fadeIn .6s ease forwards;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(180deg, #000000, #1a1a1a);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
     }
 
-    @keyframes fadeIn{
-      from{opacity:0;transform:translateY(15px)}
-      to{opacity:1;transform:translateY(0)}
+    .container {
+      background: rgba(15, 15, 15, 0.9);
+      border: 1px solid #3b3b3b;
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 420px;
+      width: 90%;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
     }
 
-    .row{margin:10px 0;text-align:left;}
-    .label{font-size:14px;color:var(--muted);}
-    .value{font-size:18px;font-weight:700;}
+    img.logo {
+      width: 80px;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 0 6px gold);
+    }
 
-    .thuluth{font-family:'GEThuluth',serif;letter-spacing:.2px;}
-    .big{font-size:28px;}
+    h1 {
+      font-size: 1.8rem;
+      background: linear-gradient(to right, #c8aa60, #fff3b0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
 
-    .footer{margin-top:30px;color:var(--muted);font-size:14px;}
+    p.subtitle {
+      color: #aaa;
+      margin-bottom: 25px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      background: #111;
+      color: #fff;
+      font-size: 1rem;
+      text-align: center;
+      letter-spacing: 1px;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 15px;
+      padding: 12px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(to right, #b28d28, #e6c266);
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background: linear-gradient(to right, #e6c266, #b28d28);
+      transform: translateY(-1px);
+    }
+
+    .result-card {
+      margin-top: 25px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.08);
+      animation: fadeIn 0.5s ease;
+    }
+
+    .label {
+      color: #d4af37;
+      font-weight: 600;
+    }
+
+    .value {
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .thuluth {
+      font-family: 'GEThuluth', serif;
+      font-size: 1.3rem;
+      background: linear-gradient(to right, #f5e6b3, #e0c47a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .footer {
+      margin-top: 25px;
+      font-size: 0.85rem;
+      color: #777;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
-  <div class="logo">
-    <img src="./logo.png" alt="Graduation Team Logo" />
+  <div class="container">
+    <img src="./logo.png" alt="Logo" class="logo" />
+    <h1>Graduation Team</h1>
+    <p class="subtitle">Check your graduation order</p>
+
+    <input type="number" id="seatNumber" placeholder="Enter your Seat Number" />
+    <button id="checkBtn">Check Order</button>
+
+    <div id="result"></div>
+
+    <div class="footer">Programmed by Albara</div>
   </div>
-
-  <h1>Graduation Team</h1>
-  <h2>Check your graduation order</h2>
-
-  <div class="search-box">
-    <input id="seat" class="input" type="number" inputmode="numeric" placeholder="Enter your seat number" />
-    <button id="go" class="btn">Check Order</button>
-  </div>
-
-  <div id="result" class="result" style="display:none">
-    <div class="row">
-      <div class="label">Order Type</div>
-      <div class="value" id="orderType">—</div>
-    </div>
-    <div class="row" id="nameRow" style="display:none">
-      <div class="label">Name on Robe</div>
-      <div class="value thuluth big" id="robeName">—</div>
-    </div>
-    <div class="row">
-      <div class="label">Size</div>
-      <div class="value" id="robeSize">—</div>
-    </div>
-    <div class="row" id="titleRow" style="display:none">
-      <div class="label">Title</div>
-      <div class="value thuluth big" id="titleVal">—</div>
-    </div>
-  </div>
-
-  <div class="footer">Programmed by Albara</div>
 
   <script>
-    const DATA_URL = './orders.json';
+    const resultDiv = document.getElementById('result');
+    const btn = document.getElementById('checkBtn');
 
-    function hasRobe(orderType=''){
-      const t = (orderType || '').toString().toLowerCase();
-      return t.includes('robe') || t.includes('full');
-    }
+    btn.addEventListener('click', async () => {
+      const seat = document.getElementById('seatNumber').value.trim();
+      resultDiv.innerHTML = '';
 
-    async function loadData(){
-      const res = await fetch(DATA_URL,{cache:'no-store'});
-      if(!res.ok) throw new Error('Failed to load data');
-      return res.json();
-    }
-
-    function findBySeat(data,seat){
-      const s=(seat||'').trim();
-      return data.find(r=>(r.seat_number||'').trim()===s);
-    }
-
-    function render(record){
-      document.getElementById('orderType').textContent=record.order_type||'—';
-      document.getElementById('robeSize').textContent=record.size||'—';
-      const nameRow=document.getElementById('nameRow');
-      const titleRow=document.getElementById('titleRow');
-
-      if(hasRobe(record.order_type)&&record.name_on_robe){
-        nameRow.style.display='';
-        document.getElementById('robeName').textContent=record.name_on_robe;
-      }else{
-        nameRow.style.display='none';
+      if (!seat) {
+        resultDiv.innerHTML = '<p style="color:#e6c266;">Please enter your seat number.</p>';
+        return;
       }
 
-      if(record.title){
-        titleRow.style.display='';
-        document.getElementById('titleVal').textContent=record.title;
-      }else{
-        titleRow.style.display='none';
-      }
-      document.getElementById('result').style.display='';
-    }
+      try {
+        const res = await fetch('./orders.json?nocache=' + Date.now());
+        const data = await res.json();
+        const student = data.find(x => x.seat_number == seat);
 
-    async function onSearch(){
-      document.getElementById('result').style.display='none';
-      const seat=document.getElementById('seat').value;
-      if(!seat){alert('Please enter your seat number.');return;}
-      try{
-        const data=await loadData();
-        const rec=findBySeat(data,seat);
-        if(!rec){alert('No record found for this seat number.');return;}
-        render(rec);
-      }catch(err){
-        console.error(err);
-        alert('An error occurred while loading data.');
-      }
-    }
+        if (!student) {
+          resultDiv.innerHTML = `
+            <div class="result-card">
+              <p style="color:#c8aa60;font-size:0.95rem;">
+                This website’s data was last updated on <b>Thursday at 12:00 PM</b>.<br>
+                If your record doesn’t appear yet, please check back later.
+              </p>
+            </div>`;
+          return;
+        }
 
-    document.getElementById('go').addEventListener('click',onSearch);
-    document.getElementById('seat').addEventListener('keydown',e=>{if(e.key==='Enter')onSearch();});
+        resultDiv.innerHTML = `
+          <div class="result-card">
+            <div><span class="label">Order Type:</span> <span class="value">${student.order_type || '-'}</span></div>
+            <div><span class="label">Name on Robe:</span> <div class="thuluth">${student.name_on_robe || '-'}</div></div>
+            <div><span class="label">Size:</span> <span class="value">${student.size || '-'}</span></div>
+            <div><span class="label">Title:</span> <div class="thuluth">${student.title || '-'}</div></div>
+          </div>
+        `;
+      } catch (err) {
+        resultDiv.innerHTML = `<p style="color:#f77;">Error loading data.</p>`;
+      }
+    });
   </script>
 </body>
 </html>
