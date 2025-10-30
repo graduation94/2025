@@ -20,8 +20,8 @@
     body {
       margin: 0;
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(180deg, #1b1b1b, #2b2b2b);
-      color: #111;
+      background: linear-gradient(180deg, #0a0a0a, #151515);
+      color: #e8e8e8;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -29,53 +29,56 @@
     }
 
     .card {
-      background: #f2f2f2;
+      background: #151515;
       width: 90%;
       max-width: 420px;
-      border-radius: 20px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+      border-radius: 22px;
+      box-shadow: 0 0 30px rgba(191,161,69,0.08);
       text-align: center;
-      padding: 40px 30px;
-      animation: fadeIn 0.8s ease forwards;
+      padding: 50px 30px;
+      animation: fadeUp 0.8s ease forwards;
       opacity: 0;
-      transform: scale(0.98);
+      transform: translateY(15px);
     }
 
-    @keyframes fadeIn {
+    @keyframes fadeUp {
       to {
         opacity: 1;
-        transform: scale(1);
+        transform: translateY(0);
       }
     }
 
-    .logo-frame {
-      width: 95px;
-      height: 95px;
+    .logo-circle {
+      width: 110px;
+      height: 110px;
       margin: 0 auto 20px;
-      background: #fff;
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      border-radius: 15px;
+      border-radius: 50%;
+      background: radial-gradient(circle at center, rgba(191,161,69,0.25), rgba(191,161,69,0.05));
+      border: 2px solid rgba(191,161,69,0.4);
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: hidden;
+      box-shadow: 0 0 20px rgba(191,161,69,0.1);
     }
 
-    .logo-frame img {
+    .logo-circle img {
       width: 80%;
       height: 80%;
       object-fit: contain;
+      border-radius: 50%;
     }
 
     h1 {
-      font-size: 1.7rem;
-      color: #111;
+      font-size: 1.9rem;
+      background: linear-gradient(90deg, #bfa145, #e3cf91);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
       font-weight: 600;
-      margin-bottom: 5px;
+      margin-bottom: 6px;
     }
 
     .subtitle {
-      color: #444;
+      color: #999;
       margin-bottom: 25px;
       font-size: 0.95rem;
     }
@@ -83,13 +86,14 @@
     input {
       width: 100%;
       padding: 12px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
       text-align: center;
       font-size: 1rem;
       outline: none;
-      background: #fff;
-      transition: border 0.3s ease;
+      transition: border-color 0.3s ease;
     }
 
     input:focus {
@@ -98,12 +102,12 @@
 
     button {
       width: 100%;
-      margin-top: 15px;
+      margin-top: 18px;
       padding: 12px;
-      border-radius: 8px;
+      border-radius: 10px;
       border: none;
-      background: #1c1c1c;
-      color: #fff;
+      background: linear-gradient(90deg, #bfa145, #e3cf91);
+      color: #000;
       font-weight: 600;
       font-size: 1rem;
       cursor: pointer;
@@ -111,23 +115,30 @@
     }
 
     button:hover {
-      background: #333;
-      color: #d4af37;
+      transform: translateY(-2px);
+      box-shadow: 0 0 20px rgba(191,161,69,0.25);
     }
 
     .result {
       margin-top: 25px;
-      background: #fff;
-      border: 1px solid #ddd;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(191,161,69,0.25);
       border-radius: 15px;
-      padding: 20px;
-      animation: fadeIn 0.6s ease forwards;
+      padding: 25px;
+      animation: fadeResult 0.6s ease forwards;
       opacity: 0;
       transform: translateY(10px);
     }
 
+    @keyframes fadeResult {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     .order-type {
-      color: #555;
+      color: #e3cf91;
       font-weight: 600;
       font-size: 1rem;
       margin-bottom: 8px;
@@ -141,33 +152,42 @@
     }
 
     .size {
-      font-size: 1rem;
-      color: #333;
-      background: #f7f7f7;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 6px 14px;
       display: inline-block;
+      font-size: 1rem;
+      color: #e8e8e8;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 6px 15px;
     }
 
     .message {
       margin-top: 25px;
-      color: #bfa145;
-      background: #fff;
+      color: #d4af37;
+      font-size: 0.95rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(191,161,69,0.25);
       border-radius: 10px;
       padding: 15px;
-      border: 1px solid #eee;
     }
 
     .footer {
       margin-top: 25px;
-      color: #999;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
+      background: linear-gradient(90deg, #bfa145, #e3cf91);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 600;
     }
 
     @media (max-width: 480px) {
       .card {
         padding: 35px 20px;
+      }
+
+      .logo-circle {
+        width: 90px;
+        height: 90px;
       }
 
       .name {
@@ -179,7 +199,7 @@
 
 <body>
   <div class="card">
-    <div class="logo-frame">
+    <div class="logo-circle">
       <img src="./logo.png" alt="Logo">
     </div>
     <h1>Graduation Team</h1>
