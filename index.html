@@ -1,293 +1,224 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Graduation Order Checker</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Graduation Order Checker</title>
 
-    <!-- Fonts -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
-      rel="stylesheet"
-    />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-    <style>
-      @font-face {
-        font-family: "GEThuluth";
-        src: url("./GE-Thuluth-Light.otf") format("opentype");
+  <style>
+    @font-face {
+      font-family: 'GEThuluth';
+      src: url('./GE-Thuluth-Light.otf') format('opentype');
+    }
+
+    body {
+      margin: 0;
+      background-color: #0a0a0a;
+      font-family: 'Inter', sans-serif;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .wrapper {
+      width: 90%;
+      max-width: 420px;
+      text-align: center;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      border-radius: 20px;
+      padding: 40px 30px;
+      box-shadow: 0 0 30px rgba(212, 175, 55, 0.05);
+      backdrop-filter: blur(8px);
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      box-shadow: 0 0 40px rgba(212, 175, 55, 0.12);
+    }
+
+    .logo {
+      width: 75px;
+      margin-bottom: 18px;
+      filter: drop-shadow(0 0 5px #d4af37);
+    }
+
+    .title {
+      font-size: 1.8rem;
+      font-weight: 600;
+      background: linear-gradient(to right, #d4af37, #f1e0a2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      color: #aaa;
+      font-size: 0.95rem;
+      margin-bottom: 25px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      outline: none;
+      color: #fff;
+      text-align: center;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
+
+    input:focus {
+      border-color: #d4af37;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 18px;
+      padding: 12px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(90deg, #b8912e 0%, #e2c566 100%);
+      color: #000;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+    }
+
+    .result {
+      margin-top: 25px;
+      padding: 25px;
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      animation: fadeUp 0.5s ease forwards;
+      transform: translateY(10px);
+      opacity: 0;
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .order-type {
+      color: #d4af37;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 1rem;
+    }
+
+    .name {
+      font-family: 'GEThuluth';
+      font-size: 1.6rem;
+      background: linear-gradient(to right, #f6e7b3, #d4af37);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin: 8px 0 12px;
+    }
+
+    .size {
+      display: inline-block;
+      color: #fff;
+      font-size: 1rem;
+      padding: 6px 15px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      background: rgba(255, 215, 0, 0.05);
+    }
+
+    .message {
+      margin-top: 25px;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      color: #d4af37;
+      animation: fadeUp 0.5s ease forwards;
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    .footer {
+      margin-top: 25px;
+      font-size: 0.85rem;
+      color: #666;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="card">
+      <img src="./logo.png" alt="Logo" class="logo">
+      <div class="title">Graduation Team</div>
+      <div class="subtitle">Check your graduation order</div>
+
+      <input type="number" id="seat" placeholder="Enter your Seat Number">
+      <button id="checkBtn">Check Order</button>
+
+      <div id="result"></div>
+
+      <div class="footer">Programmed by Albara</div>
+    </div>
+  </div>
+
+  <script>
+    const seatInput = document.getElementById('seat');
+    const checkBtn = document.getElementById('checkBtn');
+    const resultDiv = document.getElementById('result');
+
+    checkBtn.addEventListener('click', async () => {
+      const seat = seatInput.value.trim();
+      resultDiv.innerHTML = '';
+
+      if (!seat) {
+        resultDiv.innerHTML = `<div class="message">Please enter your seat number.</div>`;
+        return;
       }
 
-      body {
-        margin: 0;
-        font-family: "Roboto", sans-serif;
-        background-color: #0d0d0d;
-        color: #fff;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-      }
+      try {
+        const res = await fetch('./orders.json?nocache=' + Date.now());
+        const data = await res.json();
+        const student = data.find(x => x.seat_number == seat);
 
-      #root {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-      }
-
-      @keyframes fadeScale {
-        from {
-          opacity: 0;
-          transform: scale(0.97);
+        if (!student) {
+          resultDiv.innerHTML = `
+            <div class="message">
+              This website’s data was last updated on <b>Thursday at 11:00 PM</b>.<br>
+              If your record doesn’t appear yet, please check back later.
+            </div>`;
+          return;
         }
-        to {
-          opacity: 1;
-          transform: scale(1);
-        }
+
+        resultDiv.innerHTML = `
+          <div class="result">
+            <div class="order-type">Order Type: ${student.order_type || '-'}</div>
+            <div class="name">${student.title || ''} ${student.name_on_robe || ''}</div>
+            <div class="size">Size: ${student.size || '-'}</div>
+          </div>
+        `;
+      } catch (err) {
+        resultDiv.innerHTML = `<div class="message">Error loading data. Please try again.</div>`;
       }
-    </style>
-  </head>
-  <body>
-    <div id="root"></div>
-
-    <!-- ✅ React & ReactDOM First -->
-    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-
-    <!-- ✅ Material UI After React -->
-    <script src="https://unpkg.com/@mui/material@5.15.14/umd/material-ui.development.js"></script>
-
-    <script type="text/javascript">
-      const {
-        Container,
-        Card,
-        CardContent,
-        Typography,
-        TextField,
-        Button,
-        createTheme,
-        ThemeProvider,
-        CssBaseline,
-        Box,
-      } = MaterialUI;
-
-      const theme = createTheme({
-        palette: {
-          mode: "dark",
-          background: { default: "#0d0d0d", paper: "#1a1a1a" },
-          primary: { main: "#c5a24a" },
-          text: { primary: "#fff" },
-        },
-        shape: { borderRadius: 14 },
-      });
-
-      function App() {
-        const [seat, setSeat] = React.useState("");
-        const [student, setStudent] = React.useState(null);
-        const [message, setMessage] = React.useState("");
-
-        const handleCheck = async () => {
-          setStudent(null);
-          setMessage("");
-
-          if (!seat.trim()) {
-            setMessage("Please enter your seat number.");
-            return;
-          }
-
-          try {
-            const res = await fetch("./orders.json?nocache=" + Date.now());
-            const data = await res.json();
-            const record = data.find((x) => x.seat_number == seat);
-
-            if (!record) {
-              setMessage(
-                "This website’s data was last updated on Thursday at 11:00 PM.\nIf your record doesn’t appear yet, please check back later."
-              );
-              return;
-            }
-            setStudent(record);
-          } catch {
-            setMessage("Error loading data. Please try again.");
-          }
-        };
-
-        return (
-          React.createElement(ThemeProvider, { theme },
-            React.createElement(CssBaseline, null),
-            React.createElement(
-              Container,
-              {
-                maxWidth: "xs",
-                sx: {
-                  py: 4,
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                },
-              },
-              React.createElement("img", {
-                src: "./logo.png",
-                alt: "Logo",
-                style: {
-                  width: 80,
-                  marginBottom: 16,
-                  filter: "drop-shadow(0 0 5px #c5a24a)",
-                },
-              }),
-              React.createElement(
-                Typography,
-                {
-                  variant: "h5",
-                  sx: {
-                    background:
-                      "linear-gradient(to right, #c5a24a, #f2e5b1)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    fontWeight: 600,
-                  },
-                },
-                "Graduation Team"
-              ),
-              React.createElement(
-                Typography,
-                { variant: "body2", sx: { color: "#aaa", mb: 3 } },
-                "Check your graduation order"
-              ),
-              React.createElement(TextField, {
-                fullWidth: true,
-                type: "number",
-                variant: "outlined",
-                label: "Seat Number",
-                value: seat,
-                onChange: (e) => setSeat(e.target.value),
-                InputLabelProps: { style: { color: "#aaa" } },
-                sx: {
-                  input: { textAlign: "center", color: "#fff" },
-                  mb: 2,
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: "#333" },
-                    "&:hover fieldset": { borderColor: "#c5a24a" },
-                    "&.Mui-focused fieldset": { borderColor: "#c5a24a" },
-                  },
-                },
-              }),
-              React.createElement(
-                Button,
-                {
-                  fullWidth: true,
-                  variant: "contained",
-                  onClick: handleCheck,
-                  sx: {
-                    background:
-                      "linear-gradient(90deg, #b7933a 0%, #e3c66c 100%)",
-                    color: "#000",
-                    fontWeight: 600,
-                    textTransform: "none",
-                    py: 1.2,
-                    "&:hover": {
-                      background:
-                        "linear-gradient(90deg, #e3c66c 0%, #b7933a 100%)",
-                    },
-                  },
-                },
-                "Check Order"
-              ),
-              student &&
-                React.createElement(
-                  Card,
-                  {
-                    elevation: 3,
-                    sx: {
-                      mt: 3,
-                      border: "1px solid rgba(197,162,74,0.3)",
-                      backgroundColor: "#151515",
-                      animation: "fadeScale 0.5s ease forwards",
-                    },
-                  },
-                  React.createElement(
-                    CardContent,
-                    null,
-                    React.createElement(
-                      Typography,
-                      {
-                        variant: "subtitle1",
-                        sx: {
-                          color: "#c5a24a",
-                          fontWeight: 600,
-                          mb: 1,
-                          textAlign: "center",
-                        },
-                      },
-                      `Order Type: ${student.order_type}`
-                    ),
-                    React.createElement(
-                      Typography,
-                      {
-                        sx: {
-                          fontFamily: "GEThuluth",
-                          fontSize: "1.5rem",
-                          background:
-                            "linear-gradient(to right, #f5e6b3, #e0c47a)",
-                          WebkitBackgroundClip: "text",
-                          WebkitTextFillColor: "transparent",
-                          textAlign: "center",
-                          mb: 1,
-                        },
-                      },
-                      `${student.title} ${student.name_on_robe}`
-                    ),
-                    React.createElement(
-                      Typography,
-                      {
-                        variant: "body1",
-                        sx: {
-                          color: "#fff",
-                          textAlign: "center",
-                          background: "rgba(255,215,0,0.05)",
-                          border: "1px solid rgba(255,215,0,0.2)",
-                          display: "inline-block",
-                          px: 2,
-                          py: 0.5,
-                          borderRadius: "8px",
-                        },
-                      },
-                      `Size: ${student.size}`
-                    )
-                  )
-                ),
-              message &&
-                React.createElement(
-                  Box,
-                  {
-                    sx: {
-                      mt: 3,
-                      p: 2,
-                      borderRadius: "12px",
-                      border: "1px solid rgba(255,215,0,0.3)",
-                      backgroundColor: "rgba(255,255,255,0.05)",
-                      color: "#c5a24a",
-                      whiteSpace: "pre-line",
-                      textAlign: "center",
-                      animation: "fadeScale 0.5s ease forwards",
-                    },
-                  },
-                  message
-                ),
-              React.createElement(
-                Typography,
-                {
-                  variant: "body2",
-                  sx: { color: "#666", mt: 4, fontSize: "0.8rem" },
-                },
-                "Programmed by Albara"
-              )
-            )
-          )
-        );
-      }
-
-      const root = ReactDOM.createRoot(document.getElementById("root"));
-      root.render(React.createElement(App));
-    </script>
-  </body>
+    });
+  </script>
+</body>
 </html>
