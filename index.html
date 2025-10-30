@@ -5,15 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Graduation Order Checker</title>
 
-    <!-- MUI CDN -->
+    <!-- Fonts -->
     <link
-      rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
     />
-    <script
-      src="https://unpkg.com/@mui/material@5.15.14/umd/material-ui.development.js"
-      crossorigin
-    ></script>
 
     <style>
       @font-face {
@@ -23,9 +19,9 @@
 
       body {
         margin: 0;
+        font-family: "Roboto", sans-serif;
         background-color: #0d0d0d;
         color: #fff;
-        font-family: "Roboto", sans-serif;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -37,10 +33,28 @@
         display: flex;
         justify-content: center;
       }
+
+      @keyframes fadeScale {
+        from {
+          opacity: 0;
+          transform: scale(0.97);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
     </style>
   </head>
   <body>
     <div id="root"></div>
+
+    <!-- ✅ React & ReactDOM First -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- ✅ Material UI After React -->
+    <script src="https://unpkg.com/@mui/material@5.15.14/umd/material-ui.development.js"></script>
 
     <script type="text/javascript">
       const {
@@ -61,7 +75,7 @@
           mode: "dark",
           background: { default: "#0d0d0d", paper: "#1a1a1a" },
           primary: { main: "#c5a24a" },
-          text: { primary: "#ffffff" },
+          text: { primary: "#fff" },
         },
         shape: { borderRadius: 14 },
       });
@@ -98,51 +112,56 @@
         };
 
         return (
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <Container
-              maxWidth="xs"
-              sx={{
-                py: 4,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <img
-                src="./logo.png"
-                alt="Logo"
-                style={{
+          React.createElement(ThemeProvider, { theme },
+            React.createElement(CssBaseline, null),
+            React.createElement(
+              Container,
+              {
+                maxWidth: "xs",
+                sx: {
+                  py: 4,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                },
+              },
+              React.createElement("img", {
+                src: "./logo.png",
+                alt: "Logo",
+                style: {
                   width: 80,
                   marginBottom: 16,
                   filter: "drop-shadow(0 0 5px #c5a24a)",
-                }}
-              />
-              <Typography
-                variant="h5"
-                sx={{
-                  background:
-                    "linear-gradient(to right, #c5a24a, #f2e5b1)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  fontWeight: 600,
-                }}
-              >
-                Graduation Team
-              </Typography>
-              <Typography variant="body2" sx={{ color: "#aaa", mb: 3 }}>
-                Check your graduation order
-              </Typography>
-
-              <TextField
-                fullWidth
-                type="number"
-                variant="outlined"
-                label="Seat Number"
-                value={seat}
-                onChange={(e) => setSeat(e.target.value)}
-                InputLabelProps={{ style: { color: "#aaa" } }}
-                sx={{
+                },
+              }),
+              React.createElement(
+                Typography,
+                {
+                  variant: "h5",
+                  sx: {
+                    background:
+                      "linear-gradient(to right, #c5a24a, #f2e5b1)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    fontWeight: 600,
+                  },
+                },
+                "Graduation Team"
+              ),
+              React.createElement(
+                Typography,
+                { variant: "body2", sx: { color: "#aaa", mb: 3 } },
+                "Check your graduation order"
+              ),
+              React.createElement(TextField, {
+                fullWidth: true,
+                type: "number",
+                variant: "outlined",
+                label: "Seat Number",
+                value: seat,
+                onChange: (e) => setSeat(e.target.value),
+                InputLabelProps: { style: { color: "#aaa" } },
+                sx: {
                   input: { textAlign: "center", color: "#fff" },
                   mb: 2,
                   "& .MuiOutlinedInput-root": {
@@ -150,129 +169,125 @@
                     "&:hover fieldset": { borderColor: "#c5a24a" },
                     "&.Mui-focused fieldset": { borderColor: "#c5a24a" },
                   },
-                }}
-              />
-
-              <Button
-                fullWidth
-                variant="contained"
-                onClick={handleCheck}
-                sx={{
-                  background:
-                    "linear-gradient(90deg, #b7933a 0%, #e3c66c 100%)",
-                  color: "#000",
-                  fontWeight: 600,
-                  textTransform: "none",
-                  py: 1.2,
-                  "&:hover": {
+                },
+              }),
+              React.createElement(
+                Button,
+                {
+                  fullWidth: true,
+                  variant: "contained",
+                  onClick: handleCheck,
+                  sx: {
                     background:
-                      "linear-gradient(90deg, #e3c66c 0%, #b7933a 100%)",
+                      "linear-gradient(90deg, #b7933a 0%, #e3c66c 100%)",
+                    color: "#000",
+                    fontWeight: 600,
+                    textTransform: "none",
+                    py: 1.2,
+                    "&:hover": {
+                      background:
+                        "linear-gradient(90deg, #e3c66c 0%, #b7933a 100%)",
+                    },
                   },
-                }}
-              >
-                Check Order
-              </Button>
-
-              {student && (
-                <Card
-                  elevation={3}
-                  sx={{
-                    mt: 3,
-                    border: "1px solid rgba(197,162,74,0.3)",
-                    backgroundColor: "#151515",
-                    animation: "fadeScale 0.5s ease forwards",
-                  }}
-                >
-                  <CardContent>
-                    <Typography
-                      variant="subtitle1"
-                      sx={{
-                        color: "#c5a24a",
-                        fontWeight: 600,
-                        mb: 1,
-                        textAlign: "center",
-                      }}
-                    >
-                      Order Type: {student.order_type}
-                    </Typography>
-                    <Typography
-                      sx={{
-                        fontFamily: "GEThuluth",
-                        fontSize: "1.5rem",
-                        background:
-                          "linear-gradient(to right, #f5e6b3, #e0c47a)",
-                        WebkitBackgroundClip: "text",
-                        WebkitTextFillColor: "transparent",
-                        textAlign: "center",
-                        mb: 1,
-                      }}
-                    >
-                      {student.title} {student.name_on_robe}
-                    </Typography>
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        color: "#fff",
-                        textAlign: "center",
-                        background:
-                          "rgba(255, 215, 0, 0.05)",
-                        border: "1px solid rgba(255, 215, 0, 0.2)",
-                        display: "inline-block",
-                        px: 2,
-                        py: 0.5,
-                        borderRadius: "8px",
-                      }}
-                    >
-                      Size: {student.size}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              )}
-
-              {message && (
-                <Box
-                  sx={{
-                    mt: 3,
-                    p: 2,
-                    borderRadius: "12px",
-                    border: "1px solid rgba(255,215,0,0.3)",
-                    backgroundColor: "rgba(255,255,255,0.05)",
-                    color: "#c5a24a",
-                    whiteSpace: "pre-line",
-                    textAlign: "center",
-                    animation: "fadeScale 0.5s ease forwards",
-                  }}
-                >
-                  {message}
-                </Box>
-              )}
-
-              <Typography
-                variant="body2"
-                sx={{ color: "#666", mt: 4, fontSize: "0.8rem" }}
-              >
-                Programmed by Albara
-              </Typography>
-            </Container>
-          </ThemeProvider>
+                },
+                "Check Order"
+              ),
+              student &&
+                React.createElement(
+                  Card,
+                  {
+                    elevation: 3,
+                    sx: {
+                      mt: 3,
+                      border: "1px solid rgba(197,162,74,0.3)",
+                      backgroundColor: "#151515",
+                      animation: "fadeScale 0.5s ease forwards",
+                    },
+                  },
+                  React.createElement(
+                    CardContent,
+                    null,
+                    React.createElement(
+                      Typography,
+                      {
+                        variant: "subtitle1",
+                        sx: {
+                          color: "#c5a24a",
+                          fontWeight: 600,
+                          mb: 1,
+                          textAlign: "center",
+                        },
+                      },
+                      `Order Type: ${student.order_type}`
+                    ),
+                    React.createElement(
+                      Typography,
+                      {
+                        sx: {
+                          fontFamily: "GEThuluth",
+                          fontSize: "1.5rem",
+                          background:
+                            "linear-gradient(to right, #f5e6b3, #e0c47a)",
+                          WebkitBackgroundClip: "text",
+                          WebkitTextFillColor: "transparent",
+                          textAlign: "center",
+                          mb: 1,
+                        },
+                      },
+                      `${student.title} ${student.name_on_robe}`
+                    ),
+                    React.createElement(
+                      Typography,
+                      {
+                        variant: "body1",
+                        sx: {
+                          color: "#fff",
+                          textAlign: "center",
+                          background: "rgba(255,215,0,0.05)",
+                          border: "1px solid rgba(255,215,0,0.2)",
+                          display: "inline-block",
+                          px: 2,
+                          py: 0.5,
+                          borderRadius: "8px",
+                        },
+                      },
+                      `Size: ${student.size}`
+                    )
+                  )
+                ),
+              message &&
+                React.createElement(
+                  Box,
+                  {
+                    sx: {
+                      mt: 3,
+                      p: 2,
+                      borderRadius: "12px",
+                      border: "1px solid rgba(255,215,0,0.3)",
+                      backgroundColor: "rgba(255,255,255,0.05)",
+                      color: "#c5a24a",
+                      whiteSpace: "pre-line",
+                      textAlign: "center",
+                      animation: "fadeScale 0.5s ease forwards",
+                    },
+                  },
+                  message
+                ),
+              React.createElement(
+                Typography,
+                {
+                  variant: "body2",
+                  sx: { color: "#666", mt: 4, fontSize: "0.8rem" },
+                },
+                "Programmed by Albara"
+              )
+            )
+          )
         );
       }
 
       const root = ReactDOM.createRoot(document.getElementById("root"));
-      root.render(<App />);
-
-      const style = document.createElement("style");
-      style.innerHTML = `
-        @keyframes fadeScale {
-          from { opacity: 0; transform: scale(0.97); }
-          to { opacity: 1; transform: scale(1); }
-        }
-      `;
-      document.head.appendChild(style);
+      root.render(React.createElement(App));
     </script>
-
-    <!-- React & ReactDOM -->
-    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
   </body>
 </html>
