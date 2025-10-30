@@ -20,25 +20,27 @@
     body {
       margin: 0;
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(180deg, #0a0a0a, #151515);
+      background: linear-gradient(180deg, #0a0a0a, #1a1a1a);
       color: #e8e8e8;
       display: flex;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
+      overflow-x: hidden;
     }
 
     .card {
-      background: #151515;
+      background: rgba(20, 20, 20, 0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 22px;
       width: 90%;
       max-width: 420px;
-      border-radius: 22px;
-      box-shadow: 0 0 30px rgba(191,161,69,0.08);
+      box-shadow: 0 0 35px rgba(191,161,69,0.1);
       text-align: center;
       padding: 50px 30px;
-      animation: fadeUp 0.8s ease forwards;
       opacity: 0;
-      transform: translateY(15px);
+      transform: translateY(30px);
+      animation: fadeUp 1.2s ease forwards;
     }
 
     @keyframes fadeUp {
@@ -48,7 +50,6 @@
       }
     }
 
-    /* شعار بإطار مربع أنيق */
     .logo-box {
       width: 110px;
       height: 110px;
@@ -56,7 +57,7 @@
       border-radius: 15px;
       border: 2px solid rgba(191,161,69,0.4);
       overflow: hidden;
-      box-shadow: 0 0 15px rgba(191,161,69,0.15);
+      box-shadow: 0 0 15px rgba(191,161,69,0.1);
     }
 
     .logo-box img {
@@ -74,6 +75,7 @@
       -webkit-text-fill-color: transparent;
       font-weight: 600;
       margin-bottom: 6px;
+      letter-spacing: 0.5px;
     }
 
     .subtitle {
@@ -92,11 +94,12 @@
       text-align: center;
       font-size: 1rem;
       outline: none;
-      transition: border-color 0.3s ease;
+      transition: all 0.3s ease;
     }
 
     input:focus {
       border-color: #bfa145;
+      box-shadow: 0 0 6px rgba(191,161,69,0.3);
     }
 
     button {
@@ -114,8 +117,7 @@
     }
 
     button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 20px rgba(191,161,69,0.25);
+      box-shadow: 0 0 25px rgba(191,161,69,0.25);
     }
 
     .result {
@@ -124,9 +126,10 @@
       border: 1px solid rgba(191,161,69,0.25);
       border-radius: 15px;
       padding: 25px;
-      animation: fadeResult 0.6s ease forwards;
       opacity: 0;
       transform: translateY(10px);
+      animation: fadeResult 0.6s ease forwards;
+      animation-delay: 0.3s;
     }
 
     @keyframes fadeResult {
@@ -139,8 +142,8 @@
     .order-type {
       color: #e3cf91;
       font-weight: 600;
-      font-size: 1rem;
-      margin-bottom: 8px;
+      font-size: 1.05rem;
+      margin-bottom: 10px;
     }
 
     .name {
@@ -170,6 +173,21 @@
       padding: 15px;
     }
 
+    .loader {
+      border: 3px solid rgba(255,255,255,0.1);
+      border-top: 3px solid #d4af37;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      margin: 25px auto;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
     .footer {
       margin-top: 25px;
       font-size: 0.9rem;
@@ -192,7 +210,7 @@
 
     @media (max-width: 480px) {
       .card { padding: 35px 20px; }
-      .logo-box { width: 90px; height: 90px; border-radius: 12px; }
+      .logo-box { width: 90px; height: 90px; }
       .name { font-size: 1.4rem; }
     }
   </style>
@@ -221,6 +239,11 @@
     const btn = document.getElementById('checkBtn');
     const resultDiv = document.getElementById('result');
 
+    // تشغيل البحث عند الضغط على Enter
+    input.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') btn.click();
+    });
+
     btn.addEventListener('click', async () => {
       const seat = input.value.trim();
       resultDiv.innerHTML = '';
@@ -229,6 +252,9 @@
         resultDiv.innerHTML = `<div class="message">Please enter your seat number.</div>`;
         return;
       }
+
+      // 🔄 إظهار loader أثناء البحث
+      resultDiv.innerHTML = `<div class="loader"></div>`;
 
       try {
         const res = await fetch('./orders.json?nocache=' + Date.now());
@@ -250,6 +276,8 @@
             <div class="name">${student.title || ''} ${student.name_on_robe || ''}</div>
             <div class="size">Size: ${student.size || '-'}</div>
           </div>`;
+
+        input.value = ''; // تفريغ الحقل بعد البحث
       } catch {
         resultDiv.innerHTML = `<div class="message">Error loading data. Please try again.</div>`;
       }
