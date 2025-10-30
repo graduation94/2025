@@ -174,10 +174,25 @@
     .footer {
       margin-top: 25px;
       font-size: 0.9rem;
+      color: #aaa;
+      font-weight: 500;
+    }
+
+    .footer .gold {
       background: linear-gradient(90deg, #bfa145, #e3cf91);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       font-weight: 600;
+      animation: glow 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from {
+        filter: brightness(1);
+      }
+      to {
+        filter: brightness(1.4);
+      }
     }
 
     @media (max-width: 480px) {
@@ -205,12 +220,14 @@
     <h1>Graduation Team</h1>
     <p class="subtitle">Check your graduation order</p>
 
-    <input type="number" id="seat" placeholder="Enter your Seat Number">
+    <input type="tel" inputmode="numeric" pattern="[0-9]*" id="seat" placeholder="Enter your Seat Number">
     <button id="checkBtn">Check Order</button>
 
     <div id="result"></div>
 
-    <div class="footer">Programmed by Albara</div>
+    <div class="footer">
+      Programmed by <span class="gold">Albara</span>
+    </div>
   </div>
 
   <script>
