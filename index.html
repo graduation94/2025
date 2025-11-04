@@ -4,8 +4,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("checkBtn");
   const resultDiv = document.getElementById("result");
 
+  // helper: توحيد المقارنة حتى لو كان seat_number رقم أو نص
+  const norm = v => (v ?? "").toString().trim();
+
+  input.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") btn.click();
+  });
+
   btn.addEventListener("click", async () => {
-    const seat = input.value.trim();
+    const seat = norm(input.value);
     resultDiv.innerHTML = "";
 
     if (!seat) {
@@ -16,12 +23,14 @@ document.addEventListener("DOMContentLoaded", () => {
     resultDiv.innerHTML = `<div class="loader"></div>`;
 
     try {
-      // ✅ هنا تم التعديل ليقرأ الملف orders.json
-      const response = await fetch("orders.json?nocache=" + Date.now());
-      if (!response.ok) throw new Error("File not found or inaccessible");
+      // تأكد أن orders.json بجانب index.html (نفس المجلد)
+      const res = await fetch("./orders.json?nocache=" + Date.now());
+      if (!res.ok) throw new Error(`Cannot load orders.json (status ${res.status})`);
 
-      const data = await response.json();
-      const student = data.find(x => x.seat_number === seat);
+      const data = await res.json();
+
+      // لو seat_number في JSON أحيانًا رقم، نحوله لنص ونقارن كنص
+      const student = data.find(x => norm(x.seat_number) === seat);
 
       if (!student) {
         resultDiv.innerHTML = `
@@ -51,13 +60,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       input.value = "";
-    } catch (error) {
-      resultDiv.innerHTML = `<div class="message">⚠️ Error loading data: ${error.message}</div>`;
+    } catch (err) {
+      console.error(err); // يساعدك لو فيه صفحة بيضاء
+      resultDiv.innerHTML = `<div class="message">⚠️ Error loading data: ${err.message}</div>`;
     }
-  });
-
-  input.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") btn.click();
   });
 });
 </script>
