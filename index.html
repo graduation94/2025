@@ -1,29 +1,27 @@
 <script>
-  const input = document.getElementById('seat');
-  const btn = document.getElementById('checkBtn');
-  const resultDiv = document.getElementById('result');
+document.addEventListener("DOMContentLoaded", () => {
+  const input = document.getElementById("seat");
+  const btn = document.getElementById("checkBtn");
+  const resultDiv = document.getElementById("result");
 
-  // تشغيل البحث عند الضغط على Enter
-  input.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') btn.click();
-  });
-
-  btn.addEventListener('click', async () => {
+  btn.addEventListener("click", async () => {
     const seat = input.value.trim();
-    resultDiv.innerHTML = '';
+    resultDiv.innerHTML = "";
 
     if (!seat) {
       resultDiv.innerHTML = `<div class="message">Please enter your seat number.</div>`;
       return;
     }
 
-    // 🔄 إظهار loader أثناء البحث
     resultDiv.innerHTML = `<div class="loader"></div>`;
 
     try {
-      const res = await fetch('./orders_no_title.json?nocache=' + Date.now());
-      const data = await res.json();
-      const student = data.find(x => x.seat_number == seat);
+      // ✅ هنا تم التعديل ليقرأ الملف orders.json
+      const response = await fetch("orders.json?nocache=" + Date.now());
+      if (!response.ok) throw new Error("File not found or inaccessible");
+
+      const data = await response.json();
+      const student = data.find(x => x.seat_number === seat);
 
       if (!student) {
         resultDiv.innerHTML = `
@@ -34,28 +32,32 @@
         return;
       }
 
-      // ✅ لو الطلب فيه كلمة "Items" فقط يعرض نوع الطلب ورقم الطلب
-      const isItems = student.order_type && student.order_type.toLowerCase().includes('item');
+      const isItems = student.order_type && student.order_type.toLowerCase().includes("item");
 
       if (isItems) {
         resultDiv.innerHTML = `
           <div class="result">
-            <div class="order-type">Order Type: ${student.order_type || '-'}</div>
-            <div class="size">Order Number: ${student.order || '-'}</div>
+            <div class="order-type">Order Type: ${student.order_type || "-"}</div>
+            <div class="size">Order Number: ${student.order || "-"}</div>
           </div>`;
       } else {
         resultDiv.innerHTML = `
           <div class="result">
-            <div class="order-type">Order Type: ${student.order_type || '-'}</div>
-            <div class="name">${student.name_on_robe || ''}</div>
-            <div class="size">Size: ${student.size || '-'}</div>
-            <div class="size">Order Number: ${student.order || '-'}</div>
+            <div class="order-type">Order Type: ${student.order_type || "-"}</div>
+            <div class="name">${student.name_on_robe || ""}</div>
+            <div class="size">Size: ${student.size || "-"}</div>
+            <div class="size">Order Number: ${student.order || "-"}</div>
           </div>`;
       }
 
-      input.value = ''; // تفريغ الحقل بعد البحث
-    } catch {
-      resultDiv.innerHTML = `<div class="message">Error loading data. Please try again.</div>`;
+      input.value = "";
+    } catch (error) {
+      resultDiv.innerHTML = `<div class="message">⚠️ Error loading data: ${error.message}</div>`;
     }
   });
+
+  input.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") btn.click();
+  });
+});
 </script>
